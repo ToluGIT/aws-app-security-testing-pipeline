@@ -1,0 +1,37 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: ast-test-eks-cluster
+  region: us-east-1
+  version: "1.31"
+  tags:
+    Environment: test
+    Project: aws-app-security-testing-pipeline
+    Owner: Tolu Banji
+    ManagedBy: eksctl
+
+managedNodeGroups:
+  - name: ast-test-ng-default
+    instanceType: t3.medium
+    amiFamily: AmazonLinux2023
+    desiredCapacity: 2
+    minSize: 2
+    maxSize: 3
+    volumeSize: 20
+    privateNetworking: false
+    ssh:
+      allow: false
+    iam:
+      withAddonPolicies:
+        ebs: true
+        cloudWatch: true
+    tags:
+      Environment: test
+      Project: aws-app-security-testing-pipeline
+      Owner: Tolu Banji
+      ManagedBy: eksctl
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["api", "audit", "authenticator"]

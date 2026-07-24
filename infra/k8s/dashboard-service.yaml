@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard-service
+  namespace: ast-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard-service
+  template:
+    metadata:
+      labels:
+        app: dashboard-service
+    spec:
+      containers:
+        - name: dashboard-service
+          image: PLACEHOLDER_ECR_IMAGE_URI
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_HOST
+              value: astdb
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: astdb
+            - name: DB_USER
+              value: astuser
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: astdb-credentials
+                  key: password
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 20
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard-service
+  namespace: ast-test
+spec:
+  selector:
+    app: dashboard-service
+  ports:
+    - port: 80
+      targetPort: 8080

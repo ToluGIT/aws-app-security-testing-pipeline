@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: astdb
+  namespace: ast-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: astdb
+  template:
+    metadata:
+      labels:
+        app: astdb
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: astdb
+            - name: POSTGRES_USER
+              value: astuser
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: astdb-credentials
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: astdb
+  namespace: ast-test
+spec:
+  selector:
+    app: astdb
+  ports:
+    - port: 5432
+      targetPort: 5432

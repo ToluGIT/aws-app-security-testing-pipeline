@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ast-test
+  labels:
+    Environment: test
+    Project: aws-app-security-testing-pipeline
