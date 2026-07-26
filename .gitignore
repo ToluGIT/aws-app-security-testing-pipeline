@@ -1,46 +1,33 @@
-# Terraform
 **/.terraform/
 **/.terraform.lock.hcl
 **/terraform.tfstate
 **/terraform.tfstate.backup
 **/*.tfvars
 
-# Secrets and credentials
 **/*.pem
 **/*.key
 **/credentials
 **/.env
 **/.env.*
 
-# AWS local state
 **/.aws-sam/
 **/cdk.out/
 
-# OS junk
 .DS_Store
 
-# Editor
 .vscode/
 .idea/
 
-# Java
 target/
 *.class
 *.jar
 !openrasp-agent.jar
 
-# Node (for any tooling)
 node_modules/
 
-# Local backup files from edits
 **/*.bak
 **/*.preedit-backup
 
-# Portfolio-internal docs: kept on disk for reference, not pushed to this
-# project's remote until explicitly decided. PROJECT.md and docs/ mirror the
-# portfolio monorepo copy at
-# aws-cloudsec-portfolio/projects/15-aws-app-security-testing-pipeline/.
-# Never git-add these without an explicit instruction to do so.
-# architecture/ was un-ignored 2026-07-26 per explicit instruction to push it.
 PROJECT.md
 docs/
+architecture/
