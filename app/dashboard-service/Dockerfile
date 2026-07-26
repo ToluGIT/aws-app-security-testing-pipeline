@@ -16,8 +16,8 @@ COPY --from=build /app/target/dashboard-service-0.1.0.jar app.jar
 RUN apt-get update && apt-get install -y wget && \
     wget -q https://github.com/baidu/openrasp/releases/download/v1.3.7/rasp-java.tar.gz && \
     tar -xzf rasp-java.tar.gz && \
-    mv rasp-* /opt/rasp && \
     rm rasp-java.tar.gz && \
+    mv rasp-* /opt/rasp && \
     apt-get remove -y wget && apt-get autoremove -y
 
 EXPOSE 8080
