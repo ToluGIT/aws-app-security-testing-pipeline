@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Sample microservice endpoints for the AST pipeline project.
@@ -51,6 +52,6 @@ public class WidgetController {
     public List<Widget> widget2(@RequestParam String owner) {
         return widgetRepository.findAll().stream()
             .filter(w -> w.getOwner().equals(owner))
-            .toList();
+            .collect(Collectors.toList());
     }
 }
