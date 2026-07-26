@@ -36,6 +36,7 @@ jobs:
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
+          trivyignores: '${{ env.APP_DIR }}/.trivyignore'
 
       # If the step above exits 1, the job stops here. Nothing after this
       # point runs, and no image is built or pushed.
