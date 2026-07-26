@@ -22,6 +22,7 @@
     <tomcat.version>9.0.118</tomcat.version>
     <jackson-bom.version>2.18.8</jackson-bom.version>
     <snakeyaml.version>2.0</snakeyaml.version>
+    <spring-framework.version>5.3.33</spring-framework.version>
   </properties>
 
   <dependencies>
@@ -36,7 +37,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.7.11</version>
+      <version>42.7.12</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
