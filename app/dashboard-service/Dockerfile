@@ -20,5 +20,16 @@ RUN apt-get update && apt-get install -y wget && \
     mv rasp-* /opt/rasp && \
     apt-get remove -y wget && apt-get autoremove -y
 
+# OpenRASP's official plugin ships with meta.all_log = true, an
+# "observation mode" switch that force-downgrades every algorithm's
+# declared `action: 'block'` to `action: 'log'` (see official.js,
+# ~line 43 and ~line 761). Confirmed via a live test: detection worked
+# correctly (90% confidence, exact attack identified, query logged in
+# alarm.log) but nothing was ever blocked, because of this default, not
+# because detection failed. Flipped to false so declared block actions
+# actually block, which is the whole point of an in-process runtime
+# defense layer for this project.
+RUN sed -i 's/all_log: true/all_log: false/' /opt/rasp/rasp/plugins/official.js
+
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
