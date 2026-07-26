@@ -37,10 +37,10 @@ node_modules/
 **/*.preedit-backup
 
 # Portfolio-internal docs: kept on disk for reference, not pushed to this
-# project's remote until explicitly decided. PROJECT.md, docs/, and
-# architecture/ mirror the portfolio monorepo copy at
+# project's remote until explicitly decided. PROJECT.md and docs/ mirror the
+# portfolio monorepo copy at
 # aws-cloudsec-portfolio/projects/15-aws-app-security-testing-pipeline/.
 # Never git-add these without an explicit instruction to do so.
+# architecture/ was un-ignored 2026-07-26 per explicit instruction to push it.
 PROJECT.md
 docs/
-architecture/

@@ -1,0 +1,58 @@
+name: sast-gate
+
+# The gate runs BEFORE the image build, so a vulnerable dependency never
+# reaches ECR. Mirrors the fail-closed lesson from an earlier project in
+# this portfolio: the gate must produce a clean, testable exit code
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  id-token: write      
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPO: ast-test-ecr-dashboard-service
+  ECR_URI: 221082197153.dkr.ecr.us-east-1.amazonaws.com/ast-test-ecr-dashboard-service
+  ROLE_ARN: arn:aws:iam::221082197153:role/ast-test-role-gha-pipeline
+  APP_DIR: app/dashboard-service
+
+jobs:
+  sast-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Run Trivy filesystem/repo scan (SAST + SCA)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: ${{ env.APP_DIR }}
+          format: table
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
+
+      # If the step above exits 1, the job stops here. Nothing after this
+      # point runs, and no image is built or pushed.
+
+      - name: Assume AWS role (keyless OIDC)
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ env.ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: ECR login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push image
+        run: |
+          TAG="git-${GITHUB_SHA::12}"
+          IMAGE_REF="${ECR_URI}:${TAG}"
+          docker build -t "$IMAGE_REF" "${APP_DIR}"
+          docker push "$IMAGE_REF"
+          echo "Pushed $IMAGE_REF"
