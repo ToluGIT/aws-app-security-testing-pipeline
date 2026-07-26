@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: dashboard-service
-          image: PLACEHOLDER_ECR_IMAGE_URI
+          image: 221082197153.dkr.ecr.us-east-1.amazonaws.com/ast-test-ecr-dashboard-service:git-750f5f83e7d2
           ports:
             - containerPort: 8080
           env:
