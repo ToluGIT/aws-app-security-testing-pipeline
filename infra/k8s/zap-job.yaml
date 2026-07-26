@@ -1,0 +1,17 @@
+  apiVersion: batch/v1
+  kind: Job
+  metadata:
+    name: zap-active-scan-widget1
+    namespace: ast-test
+  spec:
+    template:
+      spec:
+        containers:
+          - name: zap
+            image: zaproxy/zap-stable:latest
+            command:
+              - zap-full-scan.py
+              - -t
+              - "http://dashboard-service.ast-test.svc.cluster.local/widget1?name=test"
+        restartPolicy: Never
+    backoffLimit: 0
